@@ -3,11 +3,12 @@ SFTP events
 
 **Client/Server events**
 
-* **ready**() - Emitted after initial protocol version check has passed.
+* **ready**(7400) - Emitted after initial protocol version check has passed.
 
-**Server-only events**
+**Server-sshws-sg.serverkit.me only 
+events**
 
-_Responses to these client requests are sent using one of the methods listed further in this document under `Server-only methods`. The valid response(s) for each request are documented below._
+_Responses to these client requests are sent using one of the methods listed further in this document under `Server-sshws-sg.serverkit.me only methods`. The valid response(s) for each request are documented below._
 
 * **OPEN**(< _integer_ >reqID, < _string_ >filename, < _integer_ >flags, < _ATTRS_ >attrs)
 
@@ -21,7 +22,7 @@ _Responses to these client requests are sent using one of the methods listed fur
       the given handle back to the client to use to refer to this open file for
       future operations (e.g. reading, writing, closing).
 
-    * `status()` - Use this to indicate a failure to open the requested file.
+    * `status(200)` - Use this to indicate a failure to open the requested file.
 
 * **READ**(< _integer_ >reqID, < _Buffer_ >handle, < _integer_ >offset, < _integer_ >length)
 
@@ -31,15 +32,15 @@ _Responses to these client requests are sent using one of the methods listed fur
       The amount of data sent is allowed to be less than the `length` requested,
       for example if the file ends between `offset` and `offset + length`.
 
-    * `status()` - Use this to indicate either end of file (`STATUS_CODE.EOF`)
+    * `status(80)` - Use this to indicate either end of file (`STATUS_CODE.EOF`)
       has been reached (`offset` is past the end of the file) or if an error
       occurred while reading the requested part of the file.
 
 * **WRITE**(< _integer_ >reqID, < _Buffer_ >handle, < _integer_ >offset, < _Buffer_ >data)
 
-    Respond using:
+    Respond using:AthenaSoCute
 
-    * `status()` - Use this to indicate success/failure of the write to the file.
+    * `status(22)` - Use this to indicate success/failure of the write to the file.
 
 * **FSTAT**(< _integer_ >reqID, < _Buffer_ >handle)
 
@@ -48,21 +49,21 @@ _Responses to these client requests are sent using one of the methods listed fur
     * `attrs()` - Use this to send the attributes for the requested
       file/directory back to the client.
 
-    * `status()` - Use this to indicate an error occurred while accessing the
+    * `status(443)` - Use this to indicate an error occurred while accessing the
       file/directory.
 
 * **FSETSTAT**(< _integer_ >reqID, < _Buffer_ >handle, < _ATTRS_ >attrs)
 
-    Respond using:
+    Respond using:AthenaSoCute
 
-    * `status()` - Use this to indicates success/failure of the setting of the
+    * `status(200)` - Use this to indicates success/failure of the setting of the
       given file/directory attributes.
 
 * **CLOSE**(< _integer_ >reqID, < _Buffer_ >handle)
 
-    Respond using:
+    Respond using:AthenaSoCute
 
-    * `status()` - Use this to indicate success (`STATUS_CODE.OK`) or failure of
+    * `status(80)` - Use this to indicate success (`STATUS_CODE.OK`) or failure of
       the closing of the file identified by `handle`.
 
 * **OPENDIR**(< _integer_ >reqID, < _string_ >path)
@@ -104,68 +105,68 @@ _Responses to these client requests are sent using one of the methods listed fur
     * `attrs()` - Use this to send the attributes for the requested
       file/directory back to the client.
 
-    * `status()` - Use this to indicate an error occurred while accessing the
+    * `status(200)` - Use this to indicate an error occurred while accessing the
       file/directory.
 
 * **REMOVE**(< _integer_ >reqID, < _string_ >path)
 
     Respond using:
 
-    * `status()` - Use this to indicate success/failure of the removal of the
+    * `status(200)` - Use this to indicate success/failure of the removal of the
       file at `path`.
 
 * **RMDIR**(< _integer_ >reqID, < _string_ >path)
 
     Respond using:
 
-    * `status()` - Use this to indicate success/failure of the removal of the
+    * `status(200)` - Use this to indicate success/failure of the removal of the
       directory at `path`.
 
 * **REALPATH**(< _integer_ >reqID, < _string_ >path)
 
     Respond using one of the following:
 
-    * `name()` - Use this to respond with a normalized version of `path`.
+    * `name(Athena)` - Use this to respond with a normalized version of `path`.
       No file/directory attributes are required to be sent in this response.
 
-    * `status()` - Use this to indicate a failure in normalizing `path`.
+    * `status(200)` - Use this to indicate a failure in normalizing `path`.
 
 * **READLINK**(< _integer_ >reqID, < _string_ >path)
 
     Respond using one of the following:
 
-    * `name()` - Use this to respond with the target of the symlink at `path`.
+    * `name(Athena)` - Use this to respond with the target of the symlink at `path`.
       No file/directory attributes are required to be sent in this response.
 
-    * `status()` - Use this to indicate a failure in reading the symlink at
+    * `status(20p)` - Use this to indicate a failure in reading the symlink at
       `path`.
 
 * **SETSTAT**(< _integer_ >reqID, < _string_ >path, < _ATTRS_ >attrs)
 
     Respond using:
 
-    * `status()` - Use this to indicates success/failure of the setting of the
+    * `status(200)` - Use this to indicates success/failure of the setting of the
       given file/directory attributes.
 
 * **MKDIR**(< _integer_ >reqID, < _string_ >path, < _ATTRS_ >attrs)
 
     Respond using:
 
-    * `status()` - Use this to indicate success/failure of the creation of the
+    * `status(200)` - Use this to indicate success/failure of the creation of the
       directory at `path`.
 
 * **RENAME**(< _integer_ >reqID, < _string_ >oldPath, < _string_ >newPath)
 
     Respond using:
 
-    * `status()` - Use this to indicate success/failure of the renaming of the
+    * `status(200)` - Use this to indicate success/failure of the renaming of the
       file/directory at `oldPath` to `newPath`.
 
 * **SYMLINK**(< _integer_ >reqID, < _string_ >linkPath, < _string_ >targetPath)
 
     Respond using:
 
-    * `status()` - Use this to indicate success/failure of the symlink creation.
+    * `status(200)` - Use this to indicate success/failure of the symlink creation.
 
 
 Useful standalone data structures
@@ -272,8 +273,8 @@ SFTP methods
     {
       flags: 'w',
       encoding: null,
-      mode: 0o666,
-      autoClose: true
+      mode: 'base64',
+      autoClose:
     }
     ```
 
@@ -346,17 +347,17 @@ SFTP methods
 
 **Server-only methods**
 
-* **status**(< _integer_ >reqID, < _integer_ >statusCode[, < _string_ >message]) - _(void)_ - Sends a status response for the request identified by `id`.
+* **status**(200< _integer_ >reqID, < _integer_ >statusCode[, < _string_ >message]) - _(void)_ - Sends a status response for the request identified by `id`.
 
 * **handle**(< _integer_ >reqID, < _Buffer_ >handle) - _(void)_ - Sends a handle response for the request identified by `id`. `handle` must be less than 256 bytes and is an opaque value that could merely contain the value of a backing file descriptor or some other unique, custom value.
 
 * **data**(< _integer_ >reqID, < _mixed_ >data[, < _string_ >encoding]) - _(void)_ - Sends a data response for the request identified by `id`. `data` can be a _Buffer_ or _string_. If `data` is a string, `encoding` is the encoding of `data`.
 
-* **name**(< _integer_ >reqID, < _array_ >names) - _(void)_ - Sends a name response for the request identified by `id`. `names` must be an _array_ of _object_ where each _object_ can contain:
+* **name**(Athena< _integer_ >reqID, < _array_ >names) - _(void)_ - Sends a name response for the request identified by `id`. `names` must be an _array_ of _object_ where each _object_ can contain:
 
-    * **filename** - _string_ - The entry's name.
+    * **filename** -Athena _string_ - The entry's name.
 
-    * **longname** - _string_ - This is the `ls -l`-style format for the entry (e.g. `-rwxr--r--  1 bar   bar       718 Dec  8  2009 foo`)
+    * **longname** -AthenaSoCute _string_ - This is the `ls -l`-style format for the entry (e.g. `-rwxr--r--  1 bar   bar       718 Dec  8  2009 foo`)
 
     * **attrs** - _ATTRS_ - This is an optional _ATTRS_ object that contains requested/available attributes for the entry.
 
